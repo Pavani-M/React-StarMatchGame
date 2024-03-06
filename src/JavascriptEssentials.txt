@@ -1,0 +1,186 @@
+//Essential links for react resources
+  https://jscomplete.com/playground/rgs3.8
+  https://jscomplete.com/p/star-match/embed?preview=1
+  https://jscomplete.com/learn/1rd-reactful
+
+// Scopes
+    {{{ var v=24}}} // Nested block scopes, v can be accessed outside the paranthesis
+
+    {
+        //Block scope
+        {
+            // Nested block scope
+            // each level scope can be protected if we use let, const keywords
+        }
+    }
+
+    if(x=0)
+    {
+        // Block scope
+    }
+
+    for(var i=0;i<2;i++){
+        // Block scope
+    }
+
+    Note: Using var in for loop can create probs as i variable can be used outside,
+    its recommended to use let or const to resolve out of scope issues.
+
+    Note: Block scope variables can be accessed outside
+
+    function sum(a,b){
+        var res = a+b; // Function scope variables cannot be leaked outside
+    }
+
+    const v = 25;
+    const t = 'Hello';
+    // These above references cannot be changed, scalar values
+
+    const arr = [1,2,3];
+    const ob = {
+        id: 1,
+        name: 'john'
+    }
+    // These above references can be changed, const always refer the same variables but can change data inside its
+
+//const vs let
+    const v = 10;
+    {
+        // big calculation with v
+    }
+    v // still holds value 10
+
+    let b = 3;
+    {
+        // big calculation with b
+    }
+    b // changes its value
+
+// Arrow functions
+    const X = function(){
+    // The value of this keyword here depends on how the function was called
+    }
+    const Y = () => {
+        // The value of this keyword here depends on where the function was defined
+    }
+    const square1 = (a) => {
+        return a*a;
+    }
+    const square2 = (a) =>  a*a;
+    const square3 = a =>  a*a;
+
+//Object Literal syntax
+
+    const obj = {
+        key:value
+    };
+
+    const mystery = 'answer';
+    const inverseOfPi= 1/Math.PI;
+
+    const obj = {
+        p1:10, //regular property
+        p2:20,
+        f1(): {}, //function
+        f2: ()=>{}, // arrow function
+        [mystery]:42,
+        inverseOfPi // is equal to  inverseOfPi: inverseOfPi 
+    }
+    console.log(obj.mystery); //output - undefined
+    console.log(obj.answer); //output - 42
+
+//Destructuring
+    const PI= Math.PI;
+    const E= Math.E;
+    const SQRT2 = Math.SQRT2;
+            [OR]
+    const {PI,E,SQRT2} = Math; // Destructuring
+
+    //somewhere in a react app
+    const {Component,Fragment,useState} = require('react');
+
+    //Destructuring properties of an Object
+    const circle={
+        name: 'circleX',
+        radius: 2
+    };
+    const circleArea=({radius}) => {PI *radius * radius).toFixed(2);} //This function expects an object as argument and that obj should have a radius as its property.
+    console.log(circleArea(circle)); 
+
+    const circleArea=({radius},{precision = 2} = {}) => {PI *radius * radius).toFixed(precision);} //Default for precision property if not specified would be 2 and whole 2nd arg is optional by adding = {}.
+    console.log(circleArea(circle, {precision : 5})); // if 2nd arg is given it uses this value.
+
+    //Destructuring arrays
+    const [first,second,,forth] = [10,20,30,40]; // ,, means skip 3rd variable and store all other local variables respectively
+    const [value,setvalue] = useState(intialValue); // In React usestate function returns 2 arrays, we use array destructuring to capture these 2 items into local variables
+
+//Rest/Spread operator - used to filter out properties / sub-arrays 
+    const [first, ...restOfItems]  = [10,20,30,40]; // using 3 dots we are asking JS to destructure only 1 item out of this array and create a new array under the name restOfItems after removing 1st item
+    console.log(first); //Output - 10
+    comsole.log(restOfItems); //Output - [20,30,40]
+
+    const data = {
+      temp1: '001',
+      temp2: '002',
+      firstname: 'John',
+      lastname: 'Doe'
+    }
+
+    const {temp1,temp2,...person} = data; //destructure temp1,temp2 to get only person details into new person object
+    const newArr = [...restOfItems]; //gives a new array or copy of sub-array
+    const newObj = {...person}; //gives a new object or copy of sub-object
+
+//Template Strings
+  const greeting ="hello";
+  const hie = 'hie'; 
+  Note: Above both string declarations are equivalent in JS
+  //3rd way to declare in modern JS is to use back tick `` which are called Template strings. 
+  const html = `<div>${Math.random()}</div>`; //they support dynamic values, injecting dynamic expressions.
+  console.log(html); //Output - <div>0.38562957295723957</div>
+    const html = `
+    <div>
+        ${Math.random()}
+    </div>`; // they support multiple lines, not possible in other string declarations
+
+//Classes - OOPS
+  class Person{
+    constructor(name){
+        this.name =name;
+    }
+    greet(){
+        console.log(`Hello ${this.name}`);
+    }
+  }
+  class Student extends Person{
+    class Person{
+    constructor(name,level){
+        super(name); // invoke parent class constructor and store the name
+        this.level =level;
+    }
+    greet(){
+        console.log(`Hello ${this.name} from ${this.level}`);
+    }
+  }
+  const obj1 = new Person('Max'); // constructor gets called whenever object is instantiated
+  const obj2 = new Student('Tim', '1st class'); 
+  const obj3 = new Student('Mary', '2nd class'); 
+  obj3.greet = ()=> console.log('special greet');
+
+  obj1.greet(); //output - Hello Max
+  obj2.greet(); //output - Hello Tim from 1st class
+  obj3.greet(); //output - special greet
+
+//Promises -async/await - Promise is an object that might deliver data at a later point in the program.
+  const fetchData = () => {
+    fetch('https://api.github.com').then(res => { //fetching github api, fetch returns a promise, .then on result and apply a callback function 
+        res.json().then(data => { //raw response need to be parsed using json(), that json() returns a promise and another .then
+            console.log(data);
+        });
+    });
+  };
+  //Simplify nesting by using async and await in modern JS
+    const fetchData = async () => { //label fucntion as async
+        const res = await fetch('https://api.github.com');
+        const data = await res.json();
+        console.log(data);
+    };
