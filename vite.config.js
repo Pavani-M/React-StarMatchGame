@@ -7,6 +7,7 @@ export default defineConfig({
     include: ['**/*.jsx'],
   },
   plugins: [react()],
+  base: "/React-StarMatchGame/",
   test: {
     globals: true,
     environment: 'jsdom',
